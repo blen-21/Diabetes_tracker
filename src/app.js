@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const app = express();
-const apikey = process.env.API_KEY;
 const ejs = require("ejs");
 const { User, SugarLog, ExerciseLog, MedicationLog } = require('./mongodb');
 const session = require("express-session");
@@ -279,9 +278,6 @@ app.get('/profile', async (req, res) => {
         res.status(500).send('An error occurred.');
     }
 });
-
-
-
 
 app.get('/submit-form', (req, res) => {
     res.redirect(`/form?username=${req.session.user.name}`);
@@ -736,6 +732,25 @@ app.get('/user/:userId/aggregate', async (req, res) => {
     }
 });
 //chat gpt api
+app.post('/chat', async (req, res) => {
+    const userMessage = req.body.message;
+    try {
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: userMessage }],
+        }, {
+            headers: {
+                'Authorization': `Bearer ${process.env.API_KEY}`, 
+                'Content-Type': 'application/json',
+            },
+        });
+
+        res.json({ reply: response.data.choices[0].message.content }); 
+    } catch (error) {
+        console.error("Error:", error.message);
+        res.status(500).json({ error: "Error connecting to OpenAI API" });
+    }
+});
 
 // Starting the server
 const PORT = process.env.PORT || 3000;
