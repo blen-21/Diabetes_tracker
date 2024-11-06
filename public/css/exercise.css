@@ -1,0 +1,82 @@
+/* Container styling */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Heading styling */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Form elements styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Select and input field styling */
+select, input[type="number"], input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Select dropdown styling */
+select {
+    background-color: #fff;
+}
+
+/* Read-only field styling */
+input[readonly] {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    cursor: not-allowed;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    padding: 12px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}

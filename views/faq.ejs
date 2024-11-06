@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Diabetes</title>
+    <link rel="stylesheet" href="/css/faq.css"> 
+</head>
+<body>
+    <h1>Frequently Asked Questions about Diabetes</h1>
+
+    <!-- Search form -->
+    <div class="search-container">
+        <input type="text" id="faq-search" placeholder="Search FAQs..." />
+        <button id="search-button">Search</button>
+    </div>
+ <!-- No results message -->
+ <p id="no-results" style="display: none;">No results found</p>
+    <div class="faq-container">
+        <% faqData.forEach(function(faq, index) { %>
+            <div class="faq-item">
+                <h2 class="faq-question" data-index="<%= index %>"><%= faq.question %></h2>
+                <p class="faq-answer" data-index="<%= index %>"><%= faq.answer %></p>
+            </div>
+        <% }); %>
+    </div>
+
+    <script src="/js/faq.js"></script>
+</body>
+</html>
+

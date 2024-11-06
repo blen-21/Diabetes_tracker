@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h2 {
+            font-size: 2em; /* Default font size */
+            text-align: center; /* Center-align text */
+            margin: 1em 0; /* Add some margin above and below */
+            line-height: 1.2; /* Adjust line height for readability */
+        }
+        
+        /* Medium-sized devices (tablets) */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.8em; /* Smaller font size */
+            }
+        }
+        
+        /* Small-sized devices (mobile) */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.5em; /* Even smaller font size */
+            }
+        }
+        
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+
+        .chat-box p {
+            margin: 10px 0;
+        }
+
+        .chat-box p strong {
+            color: #333;
+        }
+
+        .chat-input-container {
+            display: flex;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .chat-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chat-button:hover {
+            background-color: #45a049;
+        }
+        span {
+            cursor: pointer;  /* Show pointer cursor on hover */
+            color: blue;      /* Change text color to blue */
+            text-decoration: underline;  /* Underline the text */
+        }
+        
+    </style>
+</head>
+<body>
+<h2>Ask questions about diabetes</h2>
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <!-- Chat messages will appear here -->
+    </div>
+
+    <div class="chat-input-container">
+        <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+        <button class="chat-button" onclick="sendMessage()">Send</button>
+    </div>
+    <span onclick="toggleChatBox()" style="cursor: pointer; color: blue; text-decoration: underline;">Toggle Chat</span>
+</div>
+
+</body>
+</html>

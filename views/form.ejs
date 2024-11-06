@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Welcome</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/form.css'>
+    <link rel="icon" href="img/favicon.png">
+    <script src='/js/main.js'></script>
+</head>
+<body>
+    <div class="menu-container">
+        <button class="menu-button" id="menu-button">&#9776; <!-- menu icon --></button>
+        <nav class="menu" id="menu">
+            <ul>
+                <li><a href="./home">Home</a></li><hr>
+                <li><a href="./about">About</a></li><hr>
+                <li><a href="./contact">Contact Us</a></li><hr>
+            </ul>
+        </nav>
+        </div>
+
+    <div class="welcome">
+        <h1>Welcome</h1>
+        <h3>Please fill out this form. </h3>
+    </div>
+   
+    <form action="/submit-form?username=<%= username %>"  method="POST" >
+        <input name="fname" type="text" placeholder="Your First Name" required>
+        <input name="lname" type="text" placeholder="Your Last Name" required>
+        
+        <!-- Age Division -->
+        <label for="age">Your Age:</label>
+        <select name="age" id="age" required>
+            <option value="" disabled selected>Select your age group</option>
+            <option value="10-18">10-18</option>
+            <option value="19-30">19-30</option>
+            <option value="31-45">31-40</option>
+            <option value="46-60">41-50</option>
+            <option value="61+">61+</option>
+        </select>
+        <!-- Gender Option -->
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender" required>
+            <option value="" disabled selected>Select your gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <!-- Type Option -->
+        <select name="type" id="type" required>
+            <option value="" disabled selected>Select your type of diabetes</option>
+            <option value="type1">Type 1</option>
+            <option value="type2">Type 2</option>
+        </select>
+        <!-- Related Diseases -->
+        <div class="disease">
+            <label for="related-diseases">Select any related diseases or conditions you have:</label>
+            
+            <div id="related-diseases">
+                <label>
+                    <input type="checkbox" name="diseases[]" value="heart_disease">
+                    Heart Disease
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="stroke">
+                    Stroke
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="kidney_disease">
+                    Kidney Disease (Diabetic Nephropathy)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="nerve_damage">
+                    Nerve Damage (Diabetic Neuropathy)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="eye_disease">
+                    Eye Disease (Diabetic Retinopathy)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="foot_problems">
+                    Foot Problems
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="skin_conditions">
+                    Skin Conditions
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="alzheimer_disease">
+                    Alzheimer’s Disease/Dementia
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="hypertension">
+                    Hypertension (High Blood Pressure)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="hearing_loss">
+                    Hearing Loss
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="gum_disease">
+                    Gum Disease (Periodontitis)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="fatty_liver_disease">
+                    Fatty Liver Disease (NASH)
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="depression_anxiety">
+                    Depression/Anxiety
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="sexual_dysfunction">
+                    Sexual Dysfunction
+                </label><br>
+        
+                <label>
+                    <input type="checkbox" name="diseases[]" value="gastroparesis">
+                    Gastroparesis
+                </label><br>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    
+
+    <footer>
+        <div class="scroll-buttons">
+            <button id="go-up">
+                <img src="/img/up.png" alt="Go Up">
+              </button>
+              <button id="go-down" style="margin-left: auto;">
+                <img src="/img/down.png" alt="Go Down">
+              </button>
+          </div>
+    </footer>
+</body>
+</html>

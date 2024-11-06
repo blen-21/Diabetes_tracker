@@ -1,0 +1,130 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}  
+.icon{
+  height: 64px;
+  width: 64px;
+}
+ /*for the navigatiion bar*/
+ header h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+nav ul {
+  
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 1em;
+}
+
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: font-size 0.2s, font-weight 0.2s; /* add transition effect */
+}
+
+nav ul li a:hover {
+  text-decoration: none;   
+}
+.form-container {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.278);
+  max-width: 400px;
+  width: 90%;  /* Changed from 100% to 90% to fit better on mobile */
+  text-align: center;
+  margin: 0 auto;  /* Center the form horizontally */
+}
+
+.form-container h2, .form-container h5 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.form-container h5 a {
+  color: #22ff00;
+  text-decoration: none;
+}
+
+.form-container h5 a:hover {
+  text-decoration: underline;
+}
+
+/* Input Field Styles */
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* Button Styles */
+.form-container button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  background: #22ff00;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+.form-container button:hover {
+  background: #22ff00;
+}
+
+.txt {
+  color: white;
+}
+
+.error-message {
+  color: red;
+  position: relative;
+  top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+      padding: 30px;  /* Adjust padding for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .form-container {
+      padding: 20px;
+      max-width: 100%;  /* Expand form to full width */
+  }
+
+  .form-container h2 {
+      font-size: 24px;  /* Adjust font size for headings */
+  }
+
+  .form-container button {
+      padding: 10px;  /* Adjust button size for smaller screens */
+      font-size: 16px;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container input[type="password"] {
+      padding: 12px;  /* Adjust input field padding for smaller screens */
+  }
+}

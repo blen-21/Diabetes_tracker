@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugar Level Log</title>
+    <link rel="stylesheet" href="/css/log.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <div class="container">
+        <h1>Sugar Level Log</h1>
+
+        <form action="/log-sugar" method="POST">
+            <label for="timeOfDay">Time of Day:</label>
+            <select name="timeOfDay" id="timeOfDay" required>
+                <option value="" disabled selected>Select a time</option>
+                <option value="Before Breakfast">Before Breakfast</option>
+                <option value="After Breakfast">After Breakfast</option>
+                <option value="Before Lunch">Before Lunch</option>
+                <option value="After Lunch">After Lunch</option>
+                <option value="Before Dinner">Before Dinner</option>
+                <option value="Before Bedtime">Before Bedtime</option>
+            </select>
+
+            <label for="sugarLevel">Sugar Level (mg/dL):</label>
+            <input type="number" name="sugarLevel" id="level" placeholder="Enter your sugar level" required>
+            <input type="text" name="notes" id="notes" placeholder="notes">
+            <button id="submit" type="submit">Log Sugar Level</button>
+        </form>
+    </div>
+</body>
+</html>

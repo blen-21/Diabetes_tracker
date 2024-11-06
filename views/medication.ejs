@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Reminder</title>
+    <link rel="stylesheet" href="/css/med.css">
+    <script src="/js/med.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Set Your Medication Reminder</h1>
+        
+        <form id="reminder-form" action="/medication-log" method="POST">
+            <div class="form-group">
+                <label for="medName">Medication Name:</label>
+                <input type="text" id="medName" name="medName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Reminder Time:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="frequency">Frequency:</label>
+                <select id="frequency" name="frequency">
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                </select>
+            </div>
+            <button id="submit" type="submit">Set Reminder</button>
+        </form>
+
+        <div class="reminder-list">
+            <h2>Your Reminders</h2>
+            <ul id="reminder-list">
+                <!-- Dynamically populated list of reminders -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+</html>

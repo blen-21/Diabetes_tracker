@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Exercise tracker</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/exercise.css'>
+</head>
+<body>
+    <div class="container">
+        <h1>Daily exercise tracker</h1>
+        <form action="/exercise-log" method="POST" id="exerciseForm">
+            <label>Weight</label>
+            <input type="number" id="weight" placeholder="Enter your current weight" required>
+            <label for="typeOfExercise">Type Of Physical Activity:</label>
+            <select name="typeOfExercise" id="typeOfExercise" required>
+                <option value="" disabled selected>Select a type</option>
+                <option value="Aerobic">Aerobic (Cardio) activities</option>
+                <option value="Strength">Strength training</option>
+                <option value="Flexibility">Flexibility exercises</option>
+                <option value="Endurance">Endurance training</option>
+                <option value="Plyometrics">Plyometrics</option>
+                <option value="Yoga">Yoga and Pilates</option>
+            </select>
+        
+            <label for="duration">Time Duration (minutes):</label>
+            <input type="number" name="duration" id="duration" placeholder="Enter the duration of the exercise" required>
+        <!-- Hidden input for calories burned -->
+            <input type="hidden" name="caloriesBurned" id="caloriesBurned">
+            <button id="submit" type="submit">Log exercise</button>
+        </form>
+          </div>
+    
+    <script>
+        document.getElementById("exerciseForm").addEventListener("submit", function(event) {
+            const typeOfExercise = document.getElementById("typeOfExercise").value;
+            const duration = parseInt(document.getElementById("duration").value);
+            const weight = parseInt(document.getElementById("weight").value);
+        
+            const referenceWeight = 70;
+            let caloriesPerMinute;
+        
+            switch (typeOfExercise) {
+                case "Aerobic":
+                    caloriesPerMinute = 8;
+                    break;
+                case "Strength":
+                    caloriesPerMinute = 6;
+                    break;
+                case "Flexibility":
+                    caloriesPerMinute = 3;
+                    break;
+                case "Endurance":
+                    caloriesPerMinute = 9;
+                    break;
+                case "Plyometrics":
+                    caloriesPerMinute = 10;
+                    break;
+                case "Yoga":
+                    caloriesPerMinute = 4;
+                    break;
+                default:
+                    caloriesPerMinute = 0;
+            }
+        
+            // Calculate calories burned
+            const caloriesBurned = duration && typeOfExercise ? duration * caloriesPerMinute * (weight / referenceWeight) : 0;
+        
+            // Set the value of the hidden input
+            document.getElementById("caloriesBurned").value = caloriesBurned;
+        });
+        
+        
+    </script>
+    
+</body>
+</html>

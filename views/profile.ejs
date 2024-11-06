@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title> Profile</title>
+    <link rel='stylesheet' type='text/css' href='/css/profile.css'>
+    <link rel="icon" href="/img/favicon.png">
+    <script src="/js/profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function initChart() {
+        async function fetchData() {
+            const userId = "<%= userId %>"; 
+            console.log("Fetching data for user ID:", userId); 
+            try {
+                const response = await fetch(`/user/${userId}/aggregate`);
+                if (!response.ok) throw new Error("Failed to fetch data");
+    
+                const data = await response.json();
+                console.log(data); // Check data format in console if needed
+                return data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    
+        console.log("Initializing chart with data:", await fetchData());
+const aggregatedData= await fetchData()
+    if (aggregatedData) {
+        const labels = aggregatedData?.map(data => data.date);
+        const sugarLevels = aggregatedData?.map(data => data.averageSugarLevel);
+        const caloriesBurned = aggregatedData?.map(data => data.totalCaloriesBurned);
+        const ctx = document.getElementById('sugarCalorieChart').getContext('2d');
+        const sugarCalorieChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Average Sugar Level',
+                        data: sugarLevels,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true
+                    },
+                    {
+                        label: 'Total Calories Burned',
+                        data: caloriesBurned,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+}
+// Calling the initChart function when the window loads
+window.onload = initChart;
+    </script>
+</head>
+<body>
+    
+    <div class="profile-header">
+        <div class="profile-picture">
+            <img src="/img/pfp.png" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <div class="profile-field"> <span><%= fname %></span> <span><%= lname %></span></div>
+            <div class="profile-field"> <span><%= age %></span></div>
+            <div class="profile-field"> <span><%= gender %></span></div>
+        </div>
+        <a href="/logout" class="logout-button">Logout</a>
+
+        <form action="/delete" method="POST">
+            <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete Account</button>
+        </form>
+        
+    </div>
+
+    <div style="text-align: right; margin-top: 20px;">
+        <button id="edit-button" class="edit-button">Edit Profile</button>
+    </div>
+    <form id="edit-form" action="/edit-profile?username=<%= username %>" method="POST">
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" value="<%= fname %>">
+
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" value="<%= lname %>">
+
+        <label for="age">Age:</label>
+        <select id="age" name="age" value="<%= age %>">
+            <option value="10-18">10-18</option>
+            <option value="19-30">19-30</option>
+            <option value="31-40">31-40</option>
+            <option value="41-50">41-50</option>
+        </select>
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender">
+            <option value="male" <%= gender === 'male' ? 'selected' : '' %>>Male</option>
+            <option value="female" <%= gender === 'female' ? 'selected' : '' %>>Female</option>
+        </select>
+
+        <button type="submit">Save Changes</button>
+        <button type="button" id="cancel-edit">Cancel</button>
+    </form>
+</div>
+</div>
+<main>
+    <div class="features">
+        <div>
+            <a href="./log">
+                <img src="/img/blood-log.jfif" alt="Blood Log">
+            </a>
+            <p>Add log</p>
+        </div>
+        <div>
+            <a href="./exercise">
+                <img src="/img/exercise.jfif" alt="Exercise">
+            </a>
+            <p>exercise</p>
+        </div>
+        <div>
+            <a href="./nutrition">
+                <img src="/img/nutrition.jfif" alt="Nutrition">
+            </a>
+            <p>nutrition</p>
+        </div>
+        <div>
+            <a href="./medication">
+                <img src="/img/med.jfif" alt="Medication">
+            </a>
+            <p>medication</p>
+        </div>
+        <div>
+            <a href="./faq">
+                <img src="/img/faq.jfif" alt="FAQ">
+            </a>
+            <p>FAQ</p>
+        </div>
+        <div>
+            <a href="./chat">
+                <img src="/img/chat.jfif" alt="open ai">
+            </a>
+            <p>Open AI</p>
+        </div>
+    </div>
+    <div class="profile-content">
+        <h2>Your Posts</h2>
+        <div class="post-list">
+            <% if (recentSugarLevel) { %>
+                <div class="post">
+                    <h3>Recent Blood Sugar Level</h3>
+                    <p>Your latest blood sugar reading is <strong><%= recentSugarLevel %> mg/dL</strong>.</p>
+                    <small>Posted on: <%= readingDate.toLocaleDateString() %></small>
+                </div>
+            <% } else { %>
+                <p>No recent blood sugar data available.</p>
+            <% } %>
+        </div>
+        
+        
+    </div>
+    <h2>Daily Health Summary</h2>
+    <canvas id="sugarCalorieChart" width="400" height="100"></canvas>
+    
+</main>
+    <footer>
+        <div class="footer-links">
+            <a href="/home">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html>

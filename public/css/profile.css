@@ -1,0 +1,196 @@
+body {
+    background-color: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    background-color: #0C382E;
+    padding: 20px;
+    color: white;
+}
+
+.profile-picture img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-right: 20px;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+.profile-bio {
+    background-color: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-bio h2 {
+    margin-top: 0;
+}
+
+
+.profile-content {
+    padding: 20px;
+}
+
+.post-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.post h3 {
+    margin: 0;
+}
+
+.post small {
+    color: #777;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    background-color: #0C382E;
+    padding: 10px;
+    color: white;
+}
+
+.footer-links a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color:#0a0;
+    font-size: 1.2rem;
+}
+/* Edit Profile Button Styles */
+.edit-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Hidden Edit Form Styles */
+#edit-form {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display:none;
+}
+
+#edit-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+#edit-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#edit-form input,
+#edit-form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#edit-form button {
+    padding: 10px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+#edit-form button:hover {
+    background-color: #218838;
+}
+
+#edit-form #cancel-edit {
+    background-color: #dc3545;
+}
+
+#edit-form #cancel-edit:hover {
+    background-color: #c82333;
+}
+.features {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.features div {
+    text-align: center;
+    flex: 1;
+    margin: 0 10px; /* Adds space between each div */
+}
+
+.features img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.features img:hover {
+    transform: scale(1.1);
+}
+
+.features div:hover {
+    cursor: pointer;
+}
+.logout-button{
+    color:#ddd;
+}
+

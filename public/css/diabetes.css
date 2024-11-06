@@ -1,0 +1,174 @@
+body.diabetes {
+    background-color: #0C382E; 
+    color: #333333; 
+    font-family: 'Lato', sans-serif;
+    line-height: 1.7;
+    margin: 0;
+    padding: 20px;
+    font-size: 18px;
+}
+.background {
+    background-image: url('public/img/1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    color: rgb(0, 0, 0); 
+}
+.icon{
+    height: 64px;
+    width: 64px;
+}
+section {
+    margin: 2em 0;
+    padding: 2em;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #0C382E; 
+    font-size: 36px;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #0C382E;
+    letter-spacing: 1.5px;
+}
+
+h3 {
+    color: #0C382E;
+    font-size: 28px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+p {
+    margin-bottom: 20px;
+    color: #666666; 
+}
+
+ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 10px;
+    color: #555555; 
+}
+
+a {
+    color: #0C382E;
+    text-decoration: none;
+    border-bottom: 2px solid #0C382E;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+a:hover {
+    color: #0C382E;
+    border-bottom: 2px solid #0C382E;
+}
+/*for the navigatiion bar*/
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+nav ul {
+    
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 1em;
+}
+
+nav ul li a {
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: font-size 0.2s, font-weight 0.2s; 
+}
+
+nav ul li a:hover {
+    text-decoration: none;   
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff; 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+}
+
+h1, h3, p, ul, footer {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+p, ul {
+    padding: 15px;
+    background-color: #f2f2f2; 
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.link{
+    color:rgb(53, 53, 232);
+    border-bottom:#f2f2f2;
+}
+.link:hover{
+    color:blue;
+    font-size: 1.2rem;
+}
+/*Footer style */
+footer {
+    background-color: #fbfbfb;
+    padding: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 0; 
+    width: 100%;
+    box-sizing: border-box; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-buttons img {
+    width: 24px; 
+    height: 24px; 
+    margin: 0 auto; 
+    display: block; 
+  }
+  
+/* Making the container element scrollable */
+#scroll-container {
+    overflow-y: auto;
+    height: 300px; 
+    padding: 20px;
+  }
+  
+  #scroll-up, #scroll-down {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    background-color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #scroll-up {
+    top: 20px;
+    bottom: auto;
+  }

@@ -1,0 +1,57 @@
+<!-- views/messages.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+</head>
+<body>
+    <div class="container">
+        <% if (messages.success) { %>
+            <div class="alert success">
+                <%= messages.success %>
+            </div>
+        <% } %>
+        <% if (messages.error) { %>
+            <div class="alert error">
+                <%= messages.error %>
+            </div>
+        <% } %>
+    </div>
+</body>
+<style>
+    
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.alert.success {
+    background-color: #4CAF50;
+}
+
+.alert.error {
+    background-color: #f44336;
+}
+
+</style>
+</html>
