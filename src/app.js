@@ -242,24 +242,10 @@ app.get('/profile', async (req, res) => {
 
         const userId = user._id;
         const aggregatedData = await aggregateDailyData(userId);
-
-        // Get the latest blood sugar (sugarLevel) reading for the user
-        const readings = user.readings || [];
         
-        // Check if there are any readings
-        let recentSugarLevel = null;
-        let readingDate = null;
-
-        if (readings.length > 0) {
-            // Sort readings in descending order by date
-            readings.sort((a, b) => new Date(b.date) - new Date(a.date));
-            recentSugarLevel = readings[0].sugarLevel;  // Get the latest sugar level
-            readingDate = readings[0].date;  // Get the latest reading date
-        }
 
         // Log aggregated and blood sugar data to confirm they have values
         console.log("Aggregated Data:", aggregatedData);
-        console.log("Recent Sugar Level:", recentSugarLevel);
 
         res.render('profile', {
             username: user.name,
@@ -269,8 +255,6 @@ app.get('/profile', async (req, res) => {
             gender: user.gender,
             diseases: user.diseases || [],
             aggregatedData: aggregatedData,
-            recentSugarLevel: recentSugarLevel,
-            readingDate: readingDate,
             userId: userId.toString()
         });
     } catch (err) {

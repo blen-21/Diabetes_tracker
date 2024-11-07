@@ -156,15 +156,11 @@ window.onload = initChart;
     <div class="profile-content">
         <h2>Your Posts</h2>
         <div class="post-list">
-            <% if (recentSugarLevel) { %>
                 <div class="post">
                     <h3>Recent Blood Sugar Level</h3>
-                    <p>Your latest blood sugar reading is <strong><%= recentSugarLevel %> mg/dL</strong>.</p>
-                    <small>Posted on: <%= readingDate.toLocaleDateString() %></small>
+                    <p>Your latest blood sugar reading is <strong>120 mg/dL</strong>.</p>
+                    <small>Posted on: 2024-11-03 </small>
                 </div>
-            <% } else { %>
-                <p>No recent blood sugar data available.</p>
-            <% } %>
         </div>
         
         
