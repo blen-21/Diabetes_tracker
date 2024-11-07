@@ -60,7 +60,8 @@
     }
     
     nav ul li a:hover {
-        text-decoration: none;   
+        text-decoration: none; 
+        color:#FFBA00;  
     }
 
 /* for responsiveness */
@@ -111,6 +112,12 @@
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); 
         transform: translateY(2px); 
     }
+    .insights
+    {
+        font-size:xx-large;
+        color:white;
+        position:relative;
+    }
      /*Footer style */
         footer {
         background-color: #fbfbfb;
@@ -124,7 +131,7 @@
         .phone {
             position: absolute; 
             left: 70%; 
-            top: 1000px; 
+            top: 1040px; 
             transform: translate(-50%, -50%); 
             z-index: 2; 
         }

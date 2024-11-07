@@ -1,69 +1,77 @@
-/* Global Styles */
+/* contact.css */
+
 body {
-    font-family: 'Quicksand', sans-serif;
-    background-color: #0C382E;
-    color: #fbfbfb;
+    font-family: Arial, sans-serif;
+    background-color: #f0f9f9; 
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #0C382E; 
+    padding: 1em 0;
+}
+
+nav ul {
+    list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
+    justify-content: center;
 }
 
-/* Header and Navigation */
-header {
-    background-color: #000;
-    padding: 10px 0;
-    text-align: center;
-}
-
-header nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-header nav ul li {
-    display: inline;
+nav ul li {
     margin: 0 15px;
 }
 
-header nav ul li a {
+nav ul li a {
+    color: #fff;
     text-decoration: none;
-    color: #fbfbfb;
-    font-weight: bold;
+    font-size: 1em;
 }
 
-header nav ul li a:hover {
-    color: #28a745;
+nav ul li a:hover {
+    text-decoration: none;
 }
 
-/* Info Section */
 .info {
-    padding: 20px;
     text-align: center;
-}
-
-.info h3 {
-    color: #28a745;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-/* Form Styling */
-form.msg {
-    background-color: #222;
     padding: 20px;
-    border-radius: 5px;
+    color: #333;
+}
+
+.info h3.open {
+    font-size: 1.5em;
+    color: #2d6a6a; /* Darker green for contrast */
+}
+
+.info p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+form.msg {
+    max-width: 500px;
     margin: 20px auto;
-    max-width: 600px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 form.msg label {
-    display: block;
-    margin-bottom: 8px;
-    color: #fbfbfb;
+    font-size: 1em;
+    color: #2d6a6a;
 }
 
 form.msg input[type="text"],
@@ -71,66 +79,87 @@ form.msg input[type="email"],
 form.msg textarea {
     width: 100%;
     padding: 10px;
-    border: none;
-    border-radius: 4px;
+    margin-top: 5px;
     margin-bottom: 15px;
-    background-color: #333;
-    color: #fbfbfb;
+    border: 1px solid #b0d4d4;
+    border-radius: 5px;
+    box-sizing: border-box;
     font-size: 1em;
 }
 
+form.msg textarea {
+    resize: vertical;
+}
+
 form.msg button[type="submit"] {
-    background-color: #28a745;
-    color: #000;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
     width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #38a1db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
 form.msg button[type="submit"]:hover {
-    background-color: #218838;
-}
-
-/* Footer */
-footer {
-    background-color: #000;
-    color: #fbfbfb;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-}
-
-footer .scroll-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-footer .scroll-buttons button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-footer .scroll-buttons button img {
-    width: 20px;
-    height: 20px;
+    background-color: #2d6a6a; /* Darker green on hover */
 }
 
 hr {
-    border: 0;
-    border-top: 1px solid #28a745;
-    margin: 20px 0;
+    border: none;
+    height: 1px;
+    background-color: #b0d4d4; /* Light gray-blue divider */
+    margin: 30px 0;
 }
 
-/* Responsive Design */
 @media (max-width: 600px) {
-    form.msg {
-        width: 90%;
-        padding: 15px;
+    nav ul {
+        flex-direction: column;
+        text-align: center;
     }
+
+    form.msg {
+        padding: 15px;
+        width: 90%;
+    }
+}
+
+.info {
+    display: flex;
+    align-items: center; /* Align logo and contact information vertically */
+    justify-content: center; /* Center both logo and contact info in the container */
+    padding: 20px;
+    color: #333;
+    gap: 20px; /* Space between logo and info container */
+}
+
+.info h3.open {
+    font-size: 1.5em;
+    color: #2d6a6a;
+    margin-bottom: 20px;
+}
+
+.info-container {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Two columns for icon and text */
+    gap: 10px; /* Space between icon and text */
+    max-width: 400px;
+    text-align: left;
+}
+
+.info-container p {
+    display: contents; /* Ensures each p element aligns in the grid */
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    align-self: center;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
 }
