@@ -16,4 +16,3 @@ document.addEventListener('DOMContentLoaded', () => {
         editButton.style.display = 'block';
     });
   });
-  

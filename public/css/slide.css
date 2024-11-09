@@ -11,19 +11,21 @@
   top:30px;
   color:white;
   padding-bottom: 30px;
+  height:40px;
 }
 .container {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   background-color: #00011e;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 20px;
+
 }
 .container h1 {
-  font-family: "Dancing Script", cursive;
+  font-family: cursive;
   font-weight: 700;
   letter-spacing: 0.2rem;
 }
@@ -36,7 +38,7 @@
   width: 80px;
   height: 500px;
   margin: 5px;
-  border: 0.5px solid #0C382E;
+  border: 0.5px solid #00011e;
   border-radius: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   background: url(img11.jpg);

@@ -12,6 +12,7 @@ body {
     background-color: #0C382E;
     padding: 20px;
     color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Shadow in all directions */
 }
 
 .profile-picture img {
@@ -190,7 +191,84 @@ body {
 .features div:hover {
     cursor: pointer;
 }
-.logout-button{
-    color:#ddd;
+.logout{
+    color:rgb(255, 0, 0);
+    display: block;
 }
 
+/* Advice Section Container */
+.advice-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Advice Header */
+.advice-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Individual Advice Item */
+.advice-item {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #4caf50;
+    opacity: 0; /* Initial opacity for animation */
+    transform: translateY(20px); /* Initial position for slide-up effect */
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Add a delay to each advice item for a staggered effect */
+.advice-item:nth-child(1) { animation-delay: 0.1s; }
+.advice-item:nth-child(2) { animation-delay: 0.2s; }
+.advice-item:nth-child(3) { animation-delay: 0.3s; }
+.advice-item:nth-child(4) { animation-delay: 0.4s; }
+.advice-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Keyframes for fade-in and slide-up effect */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Optional hover effect */
+.advice-item:hover {
+    background-color: #e8f5e9; /* Light green shade on hover */
+}
+/* Feedback Message Container */
+.feedback-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #e0f7fa;
+    border-left: 5px solid #00796b;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Feedback Message Text */
+.feedback-message {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #00796b;
+}
+
+/* Optional Hover Effect for Motivation */
+.feedback-container:hover {
+    background-color: #b2ebf2;
+}

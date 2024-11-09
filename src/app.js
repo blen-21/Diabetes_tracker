@@ -1,10 +1,12 @@
 // jshint esversion:6
 require('dotenv').config();
+//const webpush = require("web-push");
+//const cron = require('node-cron');
 const express = require("express");
 const path = require("path");
 const app = express();
 const ejs = require("ejs");
-const { User, SugarLog, ExerciseLog, MedicationLog } = require('./mongodb');
+const { User, SugarLog, ExerciseLog, MedicationLog} = require('./mongodb');
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require("mongoose");
@@ -242,7 +244,9 @@ app.get('/profile', async (req, res) => {
 
         const userId = user._id;
         const aggregatedData = await aggregateDailyData(userId);
-        
+
+        // Generate personalized advice based on user data
+        const adviceList = generateAdvice(user, aggregatedData);
 
         // Log aggregated and blood sugar data to confirm they have values
         console.log("Aggregated Data:", aggregatedData);
@@ -255,6 +259,7 @@ app.get('/profile', async (req, res) => {
             gender: user.gender,
             diseases: user.diseases || [],
             aggregatedData: aggregatedData,
+            adviceList: adviceList,
             userId: userId.toString()
         });
     } catch (err) {
@@ -736,6 +741,57 @@ app.post('/chat', async (req, res) => {
     }
 });
 
+// Advice generation function
+function generateAdvice(user, aggregatedData) {
+    let advice = [];
+
+    // Check if the user has any related diseases
+    if (user.diseases && user.diseases.length > 0) {
+        advice.push("Due to your existing health conditions, consult with your doctor regularly to manage diabetes effectively.");
+    }
+
+    // Advice based on age group
+        if (user.age) {
+            switch (user.age) {
+                case "10-18":
+                    advice.push("Establishing healthy habits early can lead to long-term diabetes management success.");
+                    break;
+                case "19-30":
+                    advice.push("Continue building a balanced lifestyle with regular exercise and healthy eating habits.");
+                    break;
+                case "31-45":
+                    advice.push("Focus on managing stress, and maintain a balanced diet and exercise routine.");
+                    break;
+                case "46-60":
+                    advice.push("Balancing work, life, and health is essential. Regular exercise and a balanced diet can help.");
+                    break;
+                case "61+":
+                    advice.push("Focus on a balanced diet and light physical activity, and monitor your blood sugar regularly.");
+                    break;
+                default:
+                    advice.push("");
+                    break;
+            }
+
+    }
+
+    // Advice based on gender
+    if (user.gender === "female") {
+        advice.push("Women with diabetes should consider regular checkups for heart health and other related risks.");
+    } else if (user.gender === "male") {
+        advice.push("Men with diabetes may benefit from regular cardiovascular checkups and monitoring blood pressure.");
+    }
+
+    // Advice based on aggregated blood sugar data
+    if (aggregatedData && aggregatedData.length > 0) {
+        const highSugarDays = aggregatedData.filter(day => day.averageSugarLevel > 140).length;
+        if (highSugarDays > 0) {
+            advice.push("Your recent average blood sugar levels have been above the recommended range. Try adjusting your diet or increasing physical activity.");
+        }
+    }
+
+    return advice;
+}
 // Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
