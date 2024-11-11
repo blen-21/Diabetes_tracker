@@ -268,7 +268,7 @@ app.get('/profile', async (req, res) => {
             aggregatedData: aggregatedData,
             adviceList: adviceList,
             userId: userId.toString(),
-            recentSugarLevel: latestReading[0] ? latestReading[0].sugarLevel : '123',
+            recentSugarLevel: latestReading[0] ? latestReading[0].sugarLevel : '[No availabe data currently]',
             timestamp: latestReading[0] ? latestReading[0].timestamp : 'N/A'
         });
     } catch (err) {

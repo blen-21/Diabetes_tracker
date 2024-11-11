@@ -232,6 +232,7 @@
             justify-content: space-around;
             background-color: #00011e;
             color: white;
+
         }
         svg {
             width: 2.5rem;
@@ -242,6 +243,8 @@
         .icons {
             display: flex;
             justify-content: center;
+            position:relative;
+            top: 30px;
         }
         .icon-container {
             width: 6rem;
