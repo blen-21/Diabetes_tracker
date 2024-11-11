@@ -6,7 +6,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const ejs = require("ejs");
-const { User, SugarLog, ExerciseLog, MedicationLog} = require('./mongodb');
+const { User, SugarLog, ExerciseLog, MedicationLog, Admin} = require('./mongodb');
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require("mongoose");
@@ -66,23 +66,23 @@ app.get("/about", (req,res) =>{
 // Route to render the form page
 app.get("/form", (req, res) => {
     const username = req.session.user.name;
-    res.render("form", { username: username });
+    res.render("users/form", { username: username });
 });
 // Route to render the medication page
 app.get("/medication", (req,res) =>{
-    res.render("medication");
+    res.render("users/medication");
 });
 //Route to render the sugar log page
 app.get("/log", (req,res) =>{
-    res.render("log");
+    res.render("users/log");
 });
 //Route to render the nutrition page
 app.get('/nutrition', (req,res) =>{
-    res.render('nutrition');
+    res.render('users/nutrition');
 });
 //Route to render the exercise log page
 app.get('/exercise', (req,res) =>{
-    res.render('exercise');
+    res.render('users/exercise');
 });
 //Route to render the faq page
 app.get("/faq", (req, res) => {
@@ -228,10 +228,10 @@ app.get("/faq", (req, res) => {
             answer: "The best way to monitor your diabetes includes regular blood sugar checks, HbA1c tests, and tracking your diet, exercise, and any symptoms. Working closely with your healthcare provider is key."
         }
     ]; 
-    res.render("faq", { faqData: faqData });
+    res.render("users/faq", { faqData: faqData });
 });
 app.get('/chat', (req,res) =>{
-    res.render('chat');
+    res.render('users/chat');
 });
 //Route to render the profile page
 app.get('/profile', async (req, res) => {
@@ -258,7 +258,7 @@ app.get('/profile', async (req, res) => {
         console.log("Aggregated Data:", aggregatedData);
         console.log("Latest Blood Sugar Reading:", latestReading);
 
-        res.render('profile', {
+        res.render('users/profile', {
             username: user.name,
             fname: user.fname,
             lname: user.lname,
@@ -297,64 +297,62 @@ app.get("/logout", (req, res) => {
 });
 app.post("/signup", async (req, res) => {
     try {
-        const { name, password, confirmPassword } = req.body;
+        const { name, email, password, confirmPassword, role, adminCode } = req.body;
 
-        // Checking if the user already exists
-        const existingUser = await User.findOne({ name: name });
-        if (existingUser) {
+        // Check if the user or admin already exists by email or name
+        const existingUser = await User.findOne({ name });
+        const existingAdmin = await Admin.findOne({ name });
+
+        if (existingUser || existingAdmin) {
             return res.render("signup", { error: "Username already taken, please choose another one." });
         }
 
-        // Checking if passwords match
+        // Check if passwords match
         if (password !== confirmPassword) {
             return res.render("signup", { error: "Passwords do not match. Please try again." });
         }
 
-        // Password validation: At least 8 characters, containing both letters and numbers
+        // Optional: Add password complexity validation here if needed
         // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         // if (!passwordRegex.test(password)) {
         //     return res.render("signup", { error: "Password must be at least 8 characters long and contain both letters and numbers." });
         // }
 
-        // Hashing the password
-        const saltRounds = 10; // Define saltRounds
+        // Hash the password
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Creating a new user document
-        const newUser = new User({
+        let newUser;
+        if (role === 'admin') {
+            // Validate admin code if signing up as an admin
+            if (adminCode !== process.env.ADMIN_CODE) {
+                return res.render("signup", { error: "Invalid admin code. Please try again." });
+            }
+            // Create a new admin document
+            newUser = new Admin({ name, email, password: hashedPassword });
+        } else {
+            // Create a new user document
+            newUser = new User({ name, email, password: hashedPassword });
+        }
 
-            name: name,
-            password: hashedPassword
-        });
-
-        // Saving the new user to the database
+        // Save the new user or admin to the database
         await newUser.save();
 
-        // Storing user data in the session (automatic login)
+        // Store user/admin data in the session (automatic login)
         req.session.user = {
             userId: newUser._id,
             name: newUser.name,
+            role: role
         };
 
-    if(newUser){
-        req.session.userId = newUser._id,
-        console.log('User logged in with ID:', req.session.userId);
-    }
-  
+        console.log(`${role.charAt(0).toUpperCase() + role.slice(1)} logged in with ID:`, req.session.user.userId);
 
-
-         
-      if(newUser){
-        req.session.userId = newUser._id,
-        console.log('User logged in with ID:', req.session.userId);
-    }
-
-
-        // Redirecting to the form page after signup
-        res.redirect(`/form`);
+        // Redirect to the appropriate page after signup
+        const redirectUrl = role === 'admin' ? '/admin/dashboard' : '/form';
+        res.redirect(redirectUrl);
 
     } catch (error) {
-        console.log(error);
+        console.error("Signup error:", error);
         res.render("signup", { error: "An error occurred during signup. Please try again." });
     }
 });
@@ -362,39 +360,45 @@ app.post("/signup", async (req, res) => {
 // Handling login form submission
 app.post("/login", async (req, res) => {
     try {
-        // Finding the user by name
-        const user = await User.findOne({ name: req.body.name });
+        const { name, password, role } = req.body;
+        
+        // Determine collection to search based on role
+        const user = role === "admin" 
+            ? await Admin.findOne({ name })
+            : await User.findOne({ name });
         
         if (user) {
-            // Comparing the entered password with the hashed password in the database
-            const isMatch = await bcrypt.compare(req.body.password, user.password);
+            // Compare entered password with hashed password in database
+            const isMatch = await bcrypt.compare(password, user.password);
             
             if (isMatch) {
-                //storing the data in to the session
+                // Storing data in session
+                req.session.userId = user._id;
+                req.session.name = user.name;
+                req.session.email = user.email;
+                req.session.fname = user.fname;
+                req.session.lname = user.lname;
+                req.session.role = role;  // Store role in session for access control
                 
-                    req.session.userId = user._id,
-                    req.session.name = user.name,
-                    req.session.email = user.email,
-                    req.session.fname = user.email,
-                    req.session.lname = user.lname
-                    console.log('User logged in with ID:', req.session.userId);
-
+                console.log(`${role.charAt(0).toUpperCase() + role.slice(1)} logged in with ID:`, req.session.userId);
                 
-                // If Passwords match, redirecting to the profile page
-                res.redirect(`/profile?username=${user.name}`);
+                // Redirect based on role
+                const redirectUrl = role === "admin" ? "/admin/dashboard" : `/profile?username=${user.name}`;
+                res.redirect(redirectUrl);
             } else {
-                // If Passwords do not match
+                // Incorrect password
                 res.render("login", { error: "Incorrect password. Please try again." });
             }
         } else {
-            // If User not found
+            // User not found
             res.render("login", { error: "User not found. Please check your username." });
         }
     } catch (error) {
-        console.log(error);
+        console.log("Login error:", error);
         res.render("login", { error: "An error occurred during login. Please try again." });
     }
 });
+
 app.post("/submit-form", async (req, res) => {
     try {
         const { fname, lname, diseases, age, gender,type,weight } = req.body;

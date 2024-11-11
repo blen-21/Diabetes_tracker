@@ -283,22 +283,33 @@
         <span></span>
         <span></span>
         <span></span>
-    <div class="form-container">
-        <div class="content">
-        <h6 class="txt">Log in to existing account.</h6>
-        <form id="login-form" action="./login" method="post">
-          <h2 class="sign">Login</h2>
-          <h5 class="sign">Don't have an account yet?<a href="./signup">Sign up</a></h5>
-          <div class="inputBox">
-            <input name="name" type="text" placeholder="Username" required>
-            <input name="password" type="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-          </div>
-          <% if (typeof error !== 'undefined') { %>
-            <div class="error-message"><%= error %></div>
-        <% } %>
-        </form>
-        </div>
+        <div class="form-container">
+            <div class="content">
+                <h6 class="txt">Log in to an existing account.</h6>
+                <form id="login-form" action="/login" method="post">
+                    <h2 class="sign">Login</h2>
+                    <h5 class="sign">Don't have an account yet? <a href="/signup">Sign up</a></h5>
+                    
+                    <div class="inputBox">
+                        <input name="name" type="text" placeholder="Username" required>
+                        <input name="password" type="password" placeholder="Password" required>
+                        
+                        <!-- Role Selection Dropdown -->
+                        <label class="role" for="role">Login as:</label>
+                        <select name="role" id="role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        
+                        <button type="submit">Login</button>
+                    </div>
+        
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="error-message"><%= error %></div>
+                    <% } %>
+                </form>
+            </div>
+        </div>        
 
       </div>
       </section>

@@ -40,7 +40,7 @@ nav ul li a:hover {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.278);
   max-width: 400px;
-  width: 90%;  /* Changed from 100% to 90% to fit better on mobile */
+  width: 90%;  /* Changed from 100% to 90% to fit better on mobile *
   text-align: center;
   margin: 0 auto;  /* Center the form horizontally */
 }
@@ -127,4 +127,7 @@ nav ul li a:hover {
   .form-container input[type="password"] {
       padding: 12px;  /* Adjust input field padding for smaller screens */
   }
+}
+.role{
+  color:white;
 }

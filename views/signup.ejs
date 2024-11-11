@@ -275,18 +275,42 @@
         <div class="content">
             <form id="signup-form" action="/signup" method="post">
                 <h2 class="sign">Sign Up</h2>
-                <h5 class="sign">Already have an account?<a href="/Login">Sign in</a></h5>
+                <h5 class="sign">Already have an account? <a href="/Login">Sign in</a></h5>
+            
                 <div class="inputBox">
-                <input name="name" type="text" placeholder="Username" required>
-                <input name="email" type="email" placeholder="Email" required>
-                <input name= "password" type="password" placeholder="Password" required>
-                <input name="confirmPassword" type="password" placeholder="Confirm Password" required>
-                <button type="submit">Sign Up</button>
+                    <input name="name" type="text" placeholder="Username" required>
+                    <input name="email" type="email" placeholder="Email" required>
+                    <input name="password" type="password" placeholder="Password" required>
+                    <input name="confirmPassword" type="password" placeholder="Confirm Password" required>
+                    
+                    <!-- Role Selection Dropdown -->
+                    <label class="role" for="role">Sign up as:</label>
+                    <select name="role" id="role">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    
+                    <!-- Admin Code Field (Visible only when "Admin" is selected) -->
+                    <div id="adminCodeSection" style="display: none;">
+                        <input name="adminCode" type="password" placeholder="Admin Code">
+                    </div>
+            
+                    <button type="submit">Sign Up</button>
                 </div>
+            
                 <% if (typeof error !== 'undefined') { %>
                     <div class="error-message"><%= error %></div>
                 <% } %>
-              </form>
+            </form>
+            
+            <script>
+                // JavaScript to show/hide the admin code input based on role selection
+                document.getElementById('role').addEventListener('change', function() {
+                    const adminCodeSection = document.getElementById('adminCodeSection');
+                    adminCodeSection.style.display = this.value === 'admin' ? 'block' : 'none';
+                });
+            </script>
+            
 
         </div>
         

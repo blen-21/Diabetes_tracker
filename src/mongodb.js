@@ -89,9 +89,18 @@ const medicationLogSchema = new Schema({
 });
 const MedicationLog = mongoose.model('MedicationLog', medicationLogSchema);
 
+//Admin Schema
+const adminSchema = new Schema({
+  name: {type: String, required: true, unique: true},
+  email:{ type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
+const Admin = mongoose.model('Admin', adminSchema);
+
 module.exports = {
   User,
   SugarLog,
   ExerciseLog,
-  MedicationLog
+  MedicationLog,
+  Admin
 };
