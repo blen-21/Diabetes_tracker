@@ -215,18 +215,19 @@
     <div class="profile-content">
         <h2>Your Posts</h2>
         <div class="post-list">
-                <div class="post">
-                    <h3>Recent Blood Sugar Level</h3>
-                    <p>Your latest blood sugar reading is <strong>120 mg/dL</strong>.</p>
-                    <small>Posted on: 2024-11-03 </small>
-                </div>
+            <div class="post">
+                <h3>Recent Blood Sugar Level</h3>
+                <p>Your latest blood sugar reading is <strong><%= recentSugarLevel %> mg/dL</strong>.</p>
+                <small>Posted on: <%= timestamp ? new Date(timestamp).toLocaleDateString() : 'N/A' %> </small>
+            </div>
         </div>
     </div>
+    
     <h2>Daily Health Summary</h2>
-    <canvas id="lineChart" width="400" height="100"></canvas>
+    <canvas id="lineChart" width="400" height="200"></canvas>
     <hr>
     <h2>Chart</h2>
-    <canvas id="barChart" width="400" height="100"></canvas>
+    <canvas id="barChart" width="400" height="200"></canvas>
     <hr>
     <div class="feedback-container">
         <div class="feedback-message" id="feedbackMessage">Good job! Keep up the progress.</div>

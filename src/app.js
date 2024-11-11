@@ -237,7 +237,6 @@ app.get('/chat', (req,res) =>{
 app.get('/profile', async (req, res) => {
     try {
         const user = await User.findOne({ name: req.query.username });
-
         if (!user) {
             return res.status(404).send("User not found.");
         }
@@ -245,11 +244,19 @@ app.get('/profile', async (req, res) => {
         const userId = user._id;
         const aggregatedData = await aggregateDailyData(userId);
 
+        // Get the most recent blood sugar reading
+        const latestReading = await SugarLog.aggregate([
+            { $match: { user: userId } }, // Filter by user ID
+            { $sort: { timestamp: -1 } },   // Sort by timestamp in descending order
+            { $limit: 1 }                   // Limit to the most recent entry
+        ]);
+
         // Generate personalized advice based on user data
         const adviceList = generateAdvice(user, aggregatedData);
 
         // Log aggregated and blood sugar data to confirm they have values
         console.log("Aggregated Data:", aggregatedData);
+        console.log("Latest Blood Sugar Reading:", latestReading);
 
         res.render('profile', {
             username: user.name,
@@ -260,13 +267,16 @@ app.get('/profile', async (req, res) => {
             diseases: user.diseases || [],
             aggregatedData: aggregatedData,
             adviceList: adviceList,
-            userId: userId.toString()
+            userId: userId.toString(),
+            recentSugarLevel: latestReading[0] ? latestReading[0].sugarLevel : '123',
+            timestamp: latestReading[0] ? latestReading[0].timestamp : 'N/A'
         });
     } catch (err) {
         console.error(err);
         res.status(500).send('An error occurred.');
     }
 });
+
 
 app.get('/submit-form', (req, res) => {
     res.redirect(`/form?username=${req.session.user.name}`);
