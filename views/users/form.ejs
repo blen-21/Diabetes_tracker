@@ -30,14 +30,8 @@
         
         <!-- Age Division -->
         <label for="age">Your Age:</label>
-        <select name="age" id="age" required>
-            <option value="" disabled selected>Select your age group</option>
-            <option value="10-18">10-18</option>
-            <option value="19-30">19-30</option>
-            <option value="31-45">31-40</option>
-            <option value="46-60">41-50</option>
-            <option value="61+">61+</option>
-        </select>
+        <input type="number" id="age" name="age" value="<%= user.age %>" min="1" required>
+        
         <!-- Gender Option -->
         <label for="gender">Gender:</label>
         <select name="gender" id="gender" required>
@@ -147,5 +141,12 @@
               </button>
           </div>
     </footer>
+    <script>
+        document.getElementById('age').addEventListener('input', function () {
+            if (this.value < 1) {
+                this.value = '';
+            }
+        });
+    </script>    
 </body>
 </html>

@@ -84,6 +84,10 @@ app.get('/nutrition', (req,res) =>{
 app.get('/exercise', (req,res) =>{
     res.render('users/exercise');
 });
+//Route to render the exercise log page
+app.get('/admin/dashboard', (req,res) =>{
+    res.render('admins/dashboard');
+});
 //Route to render the faq page
 app.get("/faq", (req, res) => {
     const faqData = [
@@ -438,7 +442,6 @@ app.post("/submit-form", async (req, res) => {
 });
 
 //delete-account
-
 app.post('/delete', async (req, res) => {
     if (!req.session.userId) {
         return res.status(401).send('Unauthorized, please login again'); // Redirect to login if not authenticated
@@ -504,7 +507,7 @@ app.post('/edit-profile', async (req, res) => {
 // POST route to log sugar levels
 app.post('/log-sugar', async (req, res) => {
     console.log("req.session",req.session)
-    console.log("req.bodu",req.body)
+    console.log("req.body",req.body)
     try {
         // Check if the user is logged in (i.e., user ID exists in session)
         if (!req.session.userId) {
@@ -806,6 +809,56 @@ function generateAdvice(user, aggregatedData) {
 
     return advice;
 }
+//user management in the dashboard
+app.get('/users', async (req, res) => {
+    try {
+      const users = await User.find(); // Fetch all users from MongoDB
+      res.render('admins/userList', { users }); // Pass the users to the 'users' view
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error fetching users');
+    }
+  });
+
+// Admin route to show the edit form for a specific user
+// Route to display edit form for a specific user
+app.get('/admin/users/edit/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id); // Fetch the user by ID
+        if (user) {
+            res.render('admins/edit-user', { user }); // Render edit form with user data
+        } else {
+            res.render('messages', { messages: { error: 'User not found' } });
+        }
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.render('messages', { messages: { error: 'Error fetching user data' } });
+    }
+});
+
+// Route to update user information
+app.post('/admin/users/edit/:id', async (req, res) => {
+    const { fname, lname, email, age, role } = req.body; // Collect form data
+    try {
+        await User.findByIdAndUpdate(req.params.id, { fname, lname, email, age, role });
+        res.redirect('/users'); // Redirect back to the user list after updating
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.render('messages', { messages: { error: 'Error updating user data' } });
+    }
+});
+
+// Route to delete a user
+app.get('/admin/users/delete/:id', async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id); // Delete user by ID
+        res.redirect('/users'); // Redirect back to the user list
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.render('messages', { messages: { error: 'Error deleting user' } });
+    }
+});
+  
 // Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -34,7 +34,7 @@ const LogInSchema = new Schema({
     type:[String]
   },
   age:{
-    type: String
+    type: Number
   },
   gender:{
     type: String
