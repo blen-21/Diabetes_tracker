@@ -16,3 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
         editButton.style.display = 'block';
     });
   });
+ //notification 
+  function toggleDropdown() {
+    const dropdown = document.getElementById("notificationDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+// Optional: Close the dropdown when clicking outside of it
+document.addEventListener("click", function(event) {
+    const dropdown = document.getElementById("notificationDropdown");
+    const notificationIcon = document.querySelector(".notification-icon");
+
+    if (!notificationIcon.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});

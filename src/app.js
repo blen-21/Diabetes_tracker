@@ -85,8 +85,18 @@ app.get('/exercise', (req,res) =>{
     res.render('users/exercise');
 });
 //Route to render the exercise log page
-app.get('/admin/dashboard', (req,res) =>{
-    res.render('admins/dashboard');
+app.get('/admin/dashboard', async (req, res) => {
+    try {
+        const userCount = await User.countDocuments(); // Counts the total number of users
+        const activeUserCount = await User.countDocuments({ isActive: true });
+        res.render('admins/dashboard', { userCount,activeUserCount });
+    } catch (error) {
+        console.error("Error fetching user count:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+app.get('/admin/add-user', (req,res) =>{
+    res.render("admins/add-user")
 });
 //Route to render the faq page
 app.get("/faq", (req, res) => {
@@ -352,7 +362,7 @@ app.post("/signup", async (req, res) => {
         console.log(`${role.charAt(0).toUpperCase() + role.slice(1)} logged in with ID:`, req.session.user.userId);
 
         // Redirect to the appropriate page after signup
-        const redirectUrl = role === 'admin' ? '/admin/dashboard' : '/form';
+        const redirectUrl = role === 'admin' ? '/admin/dashboard' : '/form?username=${req.session.user.name}';
         res.redirect(redirectUrl);
 
     } catch (error) {
@@ -383,7 +393,8 @@ app.post("/login", async (req, res) => {
                 req.session.fname = user.fname;
                 req.session.lname = user.lname;
                 req.session.role = role;  // Store role in session for access control
-                
+                user.isActive = "true";
+                console.log("isActive: " + user.isActive)
                 console.log(`${role.charAt(0).toUpperCase() + role.slice(1)} logged in with ID:`, req.session.userId);
                 
                 // Redirect based on role
@@ -847,7 +858,30 @@ app.post('/admin/users/edit/:id', async (req, res) => {
         res.render('messages', { messages: { error: 'Error updating user data' } });
     }
 });
+//Route for add user
+app.post('/admin/add-user', async (req, res) => {
+    try {
+        // Hash the password before saving
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+        // Create a new user with the form data
+        const newUser = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword,
+            isActive: true // Assuming new users are active by default
+        });
+
+        // Save the user in the database
+        await newUser.save();
+
+        // Redirect back to the user list or dashboard with a success message
+        res.redirect('/admin/user-list'); // Adjust path as needed
+    } catch (error) {
+        console.error("Error adding new user:", error);
+        res.status(500).send("Error adding user");
+    }
+});
 // Route to delete a user
 app.get('/admin/users/delete/:id', async (req, res) => {
     try {
@@ -858,7 +892,16 @@ app.get('/admin/users/delete/:id', async (req, res) => {
         res.render('messages', { messages: { error: 'Error deleting user' } });
     }
 });
-  
+// Route for admin logout
+app.get('/admin/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Failed to log out admin:", err);
+            return res.status(500).send("Failed to log out");
+        }
+        res.redirect('/login'); // Redirect to the login page after logout
+    });
+});
 // Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

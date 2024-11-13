@@ -91,7 +91,7 @@
                         {
                             label: 'Average Sugar Level',
                             data: sugarLevels,
-                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            backgroundColor: 'rgba(255, 99, 132, 1)',
                             borderColor: 'rgba(255, 99, 132, 1)',
                             borderRadius: 8,
                             barThickness: 15
@@ -146,7 +146,22 @@
         <form action="/delete" method="POST">
             <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete Account</button>
         </form>
-        
+        <!-- Notification Icon with Dropdown Menu -->
+<div class="notification-icon" onclick="toggleDropdown()">
+    <span class="icon">🔔</span>
+    <span class="badge" id="notificationBadge">3</span> <!-- Example count -->
+    
+    <!-- Dropdown for notifications -->
+    <div class="dropdown" id="notificationDropdown">
+        <ul>
+            <li>Your profile was updated by the admin.</li>
+            <li>New feature available!</li>
+            <li>Check your recent progress.</li>
+            <!-- Add more notifications here as needed -->
+        </ul>
+    </div>
+</div>
+
     </div>
 
     <div style="text-align: right; margin-top: 20px;">

@@ -60,126 +60,89 @@
         .sidebar a:hover {
             background-color: #3498db;
         }
+/* Main Content Styles */
+.main-content {
+    margin-left: 250px;
+    padding-left: 50px;
+    width: 100%;
+    background-color: #ecf0f1;
+    min-height: 100vh;
+    overflow-x: auto;
+}
 
-        /* Main Content Styles */
-        .main-content {
-            margin-left: 250px;
-            padding-left: 50px;
-            width: 100%;
-            background-color: #ecf0f1;
-            min-height: 100vh;
-            overflow-x: auto;
-        }
+.dashboard-header h1 {
+    color: #2c3e50;
+    font-size: 28px; /* Reduced font size */
+    font-weight: 600; /* Adjusted weight */
+}
 
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+.profile-card .user-info {
+    font-size: 16px; /* Reduced font size */
+    color: #2c3e50;
+}
 
-        .dashboard-header h1 {
-            color: #2c3e50;
-            font-size: 36px;
-            font-weight: 700;
-        }
+.profile-card .user-info .name {
+    font-size: 20px; /* Reduced font size */
+    font-weight: 600; /* Adjusted weight */
+}
+.card{
+    background-color:#fff;
+}
+.card h3 {
+    color: #2c3e50;
+    font-size: 20px; /* Reduced font size */
+    font-weight: 600; /* Adjusted weight */
+}
 
-        .profile-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* Stats Section Styles */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
 
-        .profile-card .user-info {
-            font-size: 18px;
-            color: #2c3e50;
-        }
+.stat-card {
+    background-color: #fff;
+    padding: 15px; /* Reduced padding */
+    border-radius: 4px; /* Less curve on corners */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Slightly lighter shadow */
+    text-align: center;
+}
 
-        .profile-card .user-info .name {
-            font-size: 24px;
-            font-weight: 700;
-        }
+.stat-card h4 {
+    color: #34495e;
+    font-size: 16px; /* Reduced font size */
+    font-weight: 500;
+    margin-bottom: 10px; /* Adjusted spacing */
+}
 
-        .card {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+.stat-card .value {
+    font-size: 28px; /* Reduced font size */
+    font-weight: 700;
+    color: #3498db;
+}
 
-        .card h3 {
-            color: #2c3e50;
-            font-size: 24px;
-            font-weight: 700;
-        }
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 10px;
+    }
 
-        /* Stats Section Styles */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        .stat-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-        .stat-card h4 {
-            color: #34495e;
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
+    .charts-container {
+        flex-direction: column;
+    }
+}
 
-        .stat-card .value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #3498db;
-        }
-
-        /* Charts */
-        .charts-container {
-            display: flex;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        /* Responsive Styling */
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                padding: 10px;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 10px;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .charts-container {
-                flex-direction: column;
-            }
-        }
     </style>
 </head>
 <body>
@@ -195,7 +158,7 @@
         <a href="/users">Users</a>
         <a href="#">Reports</a>
         <a href="#">Settings</a>
-        <a href="#">Logout</a>
+        <a href="/admin/logout">Logout</a>
     </div>
 
     <!-- Main Content -->
@@ -217,11 +180,11 @@
         <div class="stats-container">
             <div class="stat-card">
                 <h4>Total Users</h4>
-                <div class="value">324</div>
+                <div class="value"><%= userCount %></div>
             </div>
             <div class="stat-card">
                 <h4>Active Users</h4>
-                <div class="value">275</div>
+                <div class="value"><% activeUserCount %></div>
             </div>
             <div class="stat-card">
                 <h4>New Registrations</h4>

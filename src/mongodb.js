@@ -34,7 +34,8 @@ const LogInSchema = new Schema({
     type:[String]
   },
   age:{
-    type: Number
+    type: Number,
+    required: false
   },
   gender:{
     type: String
@@ -45,6 +46,7 @@ const LogInSchema = new Schema({
   weight:{
     type: Number
   },
+  isActive: { type: Boolean, default: true },
   sugarLogs:[{ type: Schema.Types.ObjectId, ref: 'SugarLog' }], // Array of references to SugarLog
   exerciseLogs: [{type: Schema.Types.ObjectId, ref: 'ExerciseLog' }], // Array of references to ExerciseLog
   medicationLogs: [{type: Schema.Types.ObjectId, ref: 'MedicationLog' }] // Array of references to ExerciseLog
