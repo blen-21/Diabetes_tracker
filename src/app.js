@@ -779,29 +779,24 @@ function generateAdvice(user, aggregatedData) {
     }
 
     // Advice based on age group
-        if (user.age) {
-            switch (user.age) {
-                case "10-18":
-                    advice.push("Establishing healthy habits early can lead to long-term diabetes management success.");
-                    break;
-                case "19-30":
-                    advice.push("Continue building a balanced lifestyle with regular exercise and healthy eating habits.");
-                    break;
-                case "31-45":
-                    advice.push("Focus on managing stress, and maintain a balanced diet and exercise routine.");
-                    break;
-                case "46-60":
-                    advice.push("Balancing work, life, and health is essential. Regular exercise and a balanced diet can help.");
-                    break;
-                case "61+":
-                    advice.push("Focus on a balanced diet and light physical activity, and monitor your blood sugar regularly.");
-                    break;
-                default:
-                    advice.push("");
-                    break;
-            }
-
+    if (user.age) {
+        const age = Number(user.age);
+        
+        if (age >= 10 && age <= 18) {
+            advice.push("Establishing healthy habits early can lead to long-term diabetes management success.");
+        } else if (age >= 19 && age <= 30) {
+            advice.push("Continue building a balanced lifestyle with regular exercise and healthy eating habits.");
+        } else if (age >= 31 && age <= 45) {
+            advice.push("Focus on managing stress, and maintain a balanced diet and exercise routine.");
+        } else if (age >= 46 && age <= 60) {
+            advice.push("Balancing work, life, and health is essential. Regular exercise and a balanced diet can help.");
+        } else if (age >= 61) {
+            advice.push("Focus on a balanced diet and light physical activity, and monitor your blood sugar regularly.");
+        } else {
+            advice.push("");
+        }
     }
+    
 
     // Advice based on gender
     if (user.gender === "female") {
