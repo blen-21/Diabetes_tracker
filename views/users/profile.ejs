@@ -249,12 +249,23 @@
     <div class="advice-container">
         <h3 class="advice-header">Your Personalized Advice</h3>
         <div class="advice-list">
-            <% adviceList.forEach(advice => { %>
-                <div class="advice-item"><%= advice %></div>
-            <% }) %>
-            </div>
-            <p class="advice-item">If you seek more information about diabetes, visit <a style="text-decoration:none" href="https://www.diabetes.org">this page</a> or consult with your healthcare provider.</p>
+            <% if (adviceList && adviceList.length > 0) { %>
+                <% adviceList.forEach(advice => { %>
+                    <div class="advice-item"><%= advice %></div>
+                <% }) %>
+            <% } else { %>
+                <div class="advice-item">No personalized advice available at this time.</div>
+            <% } %>
+        </div>
+        <p class="advice-item">
+            If you seek more information about diabetes, visit 
+            <a style="text-decoration: none;" href="https://www.diabetes.org" target="_blank" rel="noopener noreferrer">
+                this page
+            </a> 
+            or consult with your healthcare provider.
+        </p>
     </div>
+    
 </main>
     <footer>
         <div class="footer-links">

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advice Criteria Management</title>
+  <link rel="stylesheet" href="/path/to/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    form {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .criteria-section {
+      margin-bottom: 30px;
+    }
+
+    .criteria-section h2 {
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .field-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .field-group label {
+      width: 100px;
+      font-weight: bold;
+    }
+
+    .field-group input {
+      flex: 1;
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    .field-group button {
+      background-color: #ff4c4c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .field-group button:hover {
+      background-color: #ff2e2e;
+    }
+
+    .add-button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .add-button:hover {
+      background-color: #45a049;
+    }
+
+    .submit-button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .submit-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Advice Criteria Management</h1>
+
+  <form id="criteriaForm">
+    <!-- Age Ranges Section -->
+    <div class="criteria-section" id="age-ranges-section">
+      <h2>Age Ranges</h2>
+      <!-- Example of a field group for age range -->
+      <div class="field-group">
+        <label>Min Age:</label>
+        <input type="number" name="ageRanges[][min]" placeholder="Minimum Age">
+        <label>Max Age:</label>
+        <input type="number" name="ageRanges[][max]" placeholder="Maximum Age">
+        <button type="button" onclick="removeField(this)">Remove</button>
+      </div>
+      <button type="button" class="add-button" onclick="addField('age-ranges-section', 'ageRanges')">Add Age Range</button>
+    </div>
+
+    <!-- Gender Options Section -->
+    <div class="criteria-section" id="gender-section">
+      <h2>Gender Options</h2>
+      <div class="field-group">
+        <input type="text" name="gender[]" placeholder="Gender">
+        <button type="button" onclick="removeField(this)">Remove</button>
+      </div>
+      <button type="button" class="add-button" onclick="addField('gender-section', 'gender')">Add Gender Option</button>
+    </div>
+
+    <!-- Type of Diabetes Section -->
+    <div class="criteria-section" id="diabetes-types-section">
+      <h2>Type of Diabetes</h2>
+      <div class="field-group">
+        <input type="text" name="diabetesTypes[]" placeholder="Type of Diabetes">
+        <button type="button" onclick="removeField(this)">Remove</button>
+      </div>
+      <button type="button" class="add-button" onclick="addField('diabetes-types-section', 'diabetesTypes')">Add Diabetes Type</button>
+    </div>
+
+    <!-- Related Diseases Section -->
+    <div class="criteria-section" id="related-diseases-section">
+      <h2>Related Diseases</h2>
+      <div class="field-group">
+        <input type="text" name="relatedDiseases[]" placeholder="Related Disease">
+        <button type="button" onclick="removeField(this)">Remove</button>
+      </div>
+      <button type="button" class="add-button" onclick="addField('related-diseases-section', 'relatedDiseases')">Add Disease</button>
+    </div>
+
+    <button type="submit" class="submit-button">Save Changes</button>
+  </form>
+
+  <script>
+    // Function to add a new input field dynamically
+    function addField(sectionId, name) {
+      const section = document.getElementById(sectionId);
+      const fieldGroup = document.createElement('div');
+      fieldGroup.classList.add('field-group');
+      fieldGroup.innerHTML = `
+        <input type="text" name="${name}[]" placeholder="Enter value">
+        <button type="button" onclick="removeField(this)">Remove</button>
+      `;
+      section.insertBefore(fieldGroup, section.lastElementChild);
+    }
+
+    // Function to remove an input field dynamically
+    function removeField(button) {
+      button.parentElement.remove();
+    }
+
+    // Handle form submission (optional client-side behavior)
+    document.getElementById('criteriaForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Implement form validation or additional behavior here
+      alert('Form submitted!');
+    });
+  </script>
+</body>
+</html>

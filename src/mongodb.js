@@ -99,10 +99,55 @@ const adminSchema = new Schema({
 });
 const Admin = mongoose.model('Admin', adminSchema);
 
+const adviceCriteriaSchema = new mongoose.Schema({
+  ageRanges: [
+    {
+      min: { type: Number, required: true },
+      max: { type: Number, required: true },
+      advice: { type: String, required: true },
+    },
+  ],
+  gender: [
+    {
+      type: { type: String, required: true },
+      advice: { type: String, required: true },
+    },
+  ],
+  diabetesTypes: [
+    {
+      type: { type: String, required: true },
+      advice: { type: String, required: true },
+    },
+  ],
+  relatedDiseases: [
+    {
+      disease: { type: String, required: true }, // e.g., "Hypertension"
+      advice: { type: String, required: true },
+    },
+  ],
+  aggregatedData: [
+    {
+      condition: { type: String, required: true }, // e.g., "averageSugarLevel > 140"
+      advice: { type: String, required: true },
+    },
+  ],
+  aggregatedDataConditions: [
+    {
+        key: { type: String, required: true }, // e.g., "averageSugarLevel"
+        threshold: { type: Number, required: true }, // e.g., 140
+        comparison: { type: String, required: true }, // e.g., "greaterThan" or "lessThan"
+        advice: { type: String, required: true }, // e.g., "Your sugar level is too high."
+    },
+],
+});
+
+const AdviceCriteria = mongoose.model('AdviceCriteria', adviceCriteriaSchema);
+
 module.exports = {
   User,
   SugarLog,
   ExerciseLog,
   MedicationLog,
-  Admin
+  Admin,
+  AdviceCriteria
 };

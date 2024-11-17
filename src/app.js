@@ -6,7 +6,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const ejs = require("ejs");
-const { User, SugarLog, ExerciseLog, MedicationLog, Admin} = require('./mongodb');
+const { User, SugarLog, ExerciseLog, MedicationLog, Admin, AdviceCriteria} = require('./mongodb');
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const { default: mongoose } = require("mongoose");
@@ -94,9 +94,6 @@ app.get('/admin/dashboard', async (req, res) => {
         console.error("Error fetching user count:", error);
         res.status(500).send("Internal Server Error");
     }
-});
-app.get('/admin/add-user', (req,res) =>{
-    res.render("admins/add-user")
 });
 //Route to render the faq page
 app.get("/faq", (req, res) => {
@@ -265,8 +262,9 @@ app.get('/profile', async (req, res) => {
             { $limit: 1 }                   // Limit to the most recent entry
         ]);
 
-        // Generate personalized advice based on user data
-        const adviceList = generateAdvice(user, aggregatedData);
+        // Fetch advice from the database
+        const adviceCriteria = await AdviceCriteria.findOne();
+        const adviceList = await generateAdvice(user, aggregatedData, adviceCriteria);
 
         // Log aggregated and blood sugar data to confirm they have values
         console.log("Aggregated Data:", aggregatedData);
@@ -282,7 +280,7 @@ app.get('/profile', async (req, res) => {
             aggregatedData: aggregatedData,
             adviceList: adviceList,
             userId: userId.toString(),
-            recentSugarLevel: latestReading[0] ? latestReading[0].sugarLevel : '[No availabe data currently]',
+            recentSugarLevel: latestReading[0] ? latestReading[0].sugarLevel : '[No available data currently]',
             timestamp: latestReading[0] ? latestReading[0].timestamp : 'N/A'
         });
     } catch (err) {
@@ -768,53 +766,117 @@ app.post('/chat', async (req, res) => {
         res.status(500).json({ error: "Error connecting to OpenAI API" });
     }
 });
-
+const seedAdviceCriteria = async () => {
+    const criteria = new AdviceCriteria({
+      ageRanges: [
+        { min: 10, max: 18, advice: "Establishing healthy habits early..." },
+        { min: 19, max: 30, advice: "Continue building a balanced lifestyle..." },
+        { min: 31, max: 45, advice: "Focus on managing stress..." },
+        { min: 46, max: 60, advice: "Balancing work, life, and health is essential..." },
+        { min: 61, max: 120, advice: "Focus on a balanced diet and light physical activity..." },
+      ],
+      gender: [
+        { type: "female", advice: "Women should consider regular checkups for heart health..." },
+        { type: "male", advice: "Men may benefit from regular cardiovascular checkups..." },
+      ],
+      "diabetesTypes": [
+        { "type": "Type 1", "advice": "Monitor insulin intake regularly." },
+        { "type": "Type 2", "advice": "Focus on diet and exercise to manage blood sugar levels." }
+      ],
+      relatedDiseases: [
+        { disease: "Hypertension", advice: "Manage hypertension to reduce diabetes risks." },
+        { disease: "Obesity", advice: "Consider weight management strategies." },
+      ],
+      "aggregatedDataConditions": [
+        {
+            "key": "averageSugarLevel",
+            "threshold": 140,
+            "comparison": "greaterThan",
+            "advice": "Your sugar level is too high."
+        }
+    ],
+    "diabetesTypes": [
+        {
+            "type": "Type 1",
+            "advice": "For Type 1 diabetes, ensure regular insulin shots."
+        }
+    ]
+    });
+  
+    await criteria.save();
+    console.log("Advice criteria seeded successfully!");
+  };
+  
+  seedAdviceCriteria();
+  
 // Advice generation function
-function generateAdvice(user, aggregatedData) {
-    let advice = [];
+const generateAdvice = async (user, aggregatedData, adviceCriteria) => {
+    const advice = [];
 
-    // Check if the user has any related diseases
-    if (user.diseases && user.diseases.length > 0) {
-        advice.push("Due to your existing health conditions, consult with your doctor regularly to manage diabetes effectively.");
-    }
-
-    // Advice based on age group
+    // Advice based on age ranges
     if (user.age) {
         const age = Number(user.age);
-        
-        if (age >= 10 && age <= 18) {
-            advice.push("Establishing healthy habits early can lead to long-term diabetes management success.");
-        } else if (age >= 19 && age <= 30) {
-            advice.push("Continue building a balanced lifestyle with regular exercise and healthy eating habits.");
-        } else if (age >= 31 && age <= 45) {
-            advice.push("Focus on managing stress, and maintain a balanced diet and exercise routine.");
-        } else if (age >= 46 && age <= 60) {
-            advice.push("Balancing work, life, and health is essential. Regular exercise and a balanced diet can help.");
-        } else if (age >= 61) {
-            advice.push("Focus on a balanced diet and light physical activity, and monitor your blood sugar regularly.");
-        } else {
-            advice.push("");
-        }
+        const ageRange = adviceCriteria.ageRanges.find(
+            (range) => age >= range.min && age <= range.max
+        );
+        if (ageRange) advice.push(ageRange.advice);
     }
-    
 
     // Advice based on gender
-    if (user.gender === "female") {
-        advice.push("Women with diabetes should consider regular checkups for heart health and other related risks.");
-    } else if (user.gender === "male") {
-        advice.push("Men with diabetes may benefit from regular cardiovascular checkups and monitoring blood pressure.");
+    if (user.gender) {
+        const genderAdvice = adviceCriteria.gender.find((g) => g.type === user.gender);
+        if (genderAdvice) advice.push(genderAdvice.advice);
     }
 
-    // Advice based on aggregated blood sugar data
-    if (aggregatedData && aggregatedData.length > 0) {
-        const highSugarDays = aggregatedData.filter(day => day.averageSugarLevel > 140).length;
-        if (highSugarDays > 0) {
-            advice.push("Your recent average blood sugar levels have been above the recommended range. Try adjusting your diet or increasing physical activity.");
-        }
+    // Advice based on related diseases
+    if (user.diseases && user.diseases.length > 0) {
+        user.diseases.forEach((disease) => {
+            const diseaseAdvice = adviceCriteria.relatedDiseases.find(
+                (d) => d.disease === disease
+            );
+            if (diseaseAdvice) advice.push(diseaseAdvice.advice);
+        });
     }
+
+// Advice based on aggregated data
+if (aggregatedData && aggregatedData.length > 0) {
+    const aggregatedDataConditions = adviceCriteria.aggregatedDataConditions; // From DB
+    aggregatedDataConditions.forEach((condition) => {
+        const key = condition.key; // e.g., "averageSugarLevel"
+        const threshold = condition.threshold; // e.g., 140
+        const comparison = condition.comparison; // e.g., "greaterThan"
+
+        aggregatedData.forEach((dataPoint) => {
+            const value = dataPoint[key]; // Access value by key
+            if (value !== undefined) {
+                if (
+                    (comparison === "greaterThan" && value > threshold) ||
+                    (comparison === "lessThan" && value < threshold) ||
+                    (comparison === "equals" && value === threshold)
+                ) {
+                    advice.push(condition.advice);
+                }
+            }
+        });
+    });
+} else {
+    console.error("Aggregated data is empty or undefined.");
+}
+//advice based on diabetes type
+if (user.diabetesType && adviceCriteria.diabetesTypes) {
+    const matchedDiabetesType = adviceCriteria.diabetesTypes.find(
+        (type) => type.type === user.diabetesType
+    );
+    if (matchedDiabetesType) {
+        advice.push(matchedDiabetesType.advice);
+    } else {
+        console.log("No matching advice for diabetes type.");
+    }
+}
 
     return advice;
-}
+};
+ 
 //user management in the dashboard
 app.get('/users', async (req, res) => {
     try {
@@ -825,8 +887,6 @@ app.get('/users', async (req, res) => {
       res.status(500).send('Error fetching users');
     }
   });
-
-// Admin route to show the edit form for a specific user
 // Route to display edit form for a specific user
 app.get('/admin/users/edit/:id', async (req, res) => {
     try {
@@ -853,30 +913,6 @@ app.post('/admin/users/edit/:id', async (req, res) => {
         res.render('messages', { messages: { error: 'Error updating user data' } });
     }
 });
-//Route for add user
-app.post('/admin/add-user', async (req, res) => {
-    try {
-        // Hash the password before saving
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        // Create a new user with the form data
-        const newUser = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: hashedPassword,
-            isActive: true // Assuming new users are active by default
-        });
-
-        // Save the user in the database
-        await newUser.save();
-
-        // Redirect back to the user list or dashboard with a success message
-        res.redirect('/admin/user-list'); // Adjust path as needed
-    } catch (error) {
-        console.error("Error adding new user:", error);
-        res.status(500).send("Error adding user");
-    }
-});
 // Route to delete a user
 app.get('/admin/users/delete/:id', async (req, res) => {
     try {
@@ -897,6 +933,10 @@ app.get('/admin/logout', (req, res) => {
         res.redirect('/login'); // Redirect to the login page after logout
     });
 });
+  app.get("/admin/settings", (req, res) => {
+    res.render("admins/settings");
+});
+
 // Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
