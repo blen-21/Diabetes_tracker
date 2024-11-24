@@ -59,11 +59,8 @@ const sugarLogSchema = new Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
     date: { type: Date, default: Date.now },
     timeOfDay: { type: String, required: true }, 
-
     sugarLevel: { type: String, required: false }, 
-
     sugarLevel: { type: Number, required: true }, 
-
     notes: { type: String } 
 });
 
@@ -121,7 +118,7 @@ const adviceCriteriaSchema = new mongoose.Schema({
   ],
   relatedDiseases: [
     {
-      disease: { type: String, required: true }, // e.g., "Hypertension"
+      disease: { type: String, required: true },
       advice: { type: String, required: true },
     },
   ],

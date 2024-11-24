@@ -92,48 +92,60 @@
 <body>
   <h1>Advice Criteria Management</h1>
 
-  <form id="criteriaForm">
+  <form id="criteriaForm" method="POST" action="/admin/settings/update">
     <!-- Age Ranges Section -->
     <div class="criteria-section" id="age-ranges-section">
       <h2>Age Ranges</h2>
-      <!-- Example of a field group for age range -->
-      <div class="field-group">
-        <label>Min Age:</label>
-        <input type="number" name="ageRanges[][min]" placeholder="Minimum Age">
-        <label>Max Age:</label>
-        <input type="number" name="ageRanges[][max]" placeholder="Maximum Age">
-        <button type="button" onclick="removeField(this)">Remove</button>
-      </div>
+      <% adviceCriteria.ageRanges.forEach((range, index) => { %>
+        <div class="field-group">
+          <label>Min Age:</label>
+          <input type="number" name="ageRanges[<%= index %>][min]" value="<%= range.min %>" placeholder="Minimum Age">
+          <label>Max Age:</label>
+          <input type="number" name="ageRanges[<%= index %>][max]" value="<%= range.max %>" placeholder="Maximum Age">
+          <label>Advice:</label>
+          <input type="text" name="ageRanges[<%= index %>][advice]" value="<%= range.advice %>" placeholder="Advice">
+          <button type="button" onclick="removeField(this)">Remove</button>
+        </div>
+      <% }); %>
       <button type="button" class="add-button" onclick="addField('age-ranges-section', 'ageRanges')">Add Age Range</button>
     </div>
 
     <!-- Gender Options Section -->
     <div class="criteria-section" id="gender-section">
       <h2>Gender Options</h2>
-      <div class="field-group">
-        <input type="text" name="gender[]" placeholder="Gender">
-        <button type="button" onclick="removeField(this)">Remove</button>
-      </div>
+      <% adviceCriteria.gender.forEach((genderItem, index) => { %>
+        <div class="field-group">
+          <input type="text" name="gender[<%= index %>][type]" value="<%= genderItem.type %>" placeholder="Gender">
+          <input type="text" name="gender[<%= index %>][advice]" value="<%= genderItem.advice %>" placeholder="Advice">
+          <button type="button" onclick="removeField(this)">Remove</button>
+        </div>
+      <% }); %>
       <button type="button" class="add-button" onclick="addField('gender-section', 'gender')">Add Gender Option</button>
     </div>
 
     <!-- Type of Diabetes Section -->
     <div class="criteria-section" id="diabetes-types-section">
       <h2>Type of Diabetes</h2>
-      <div class="field-group">
-        <input type="text" name="diabetesTypes[]" placeholder="Type of Diabetes">
-        <button type="button" onclick="removeField(this)">Remove</button>
-      </div>
+      <% adviceCriteria.diabetesTypes.forEach((type, index) => { %>
+        <div class="field-group">
+          <input type="text" name="diabetesTypes[<%= index %>][type]" value="<%= type.type %>" placeholder="Type of Diabetes">
+          <input type="text" name="diabetesTypes[<%= index %>][advice]" value="<%= type.advice %>" placeholder="Advice">
+          <button type="button" onclick="removeField(this)">Remove</button>
+        </div>
+      <% }); %>
       <button type="button" class="add-button" onclick="addField('diabetes-types-section', 'diabetesTypes')">Add Diabetes Type</button>
     </div>
 
     <!-- Related Diseases Section -->
     <div class="criteria-section" id="related-diseases-section">
       <h2>Related Diseases</h2>
-      <div class="field-group">
-        <input type="text" name="relatedDiseases[]" placeholder="Related Disease">
-        <button type="button" onclick="removeField(this)">Remove</button>
-      </div>
+      <% adviceCriteria.relatedDiseases.forEach((disease, index) => { %>
+        <div class="field-group">
+          <input type="text" name="relatedDiseases[<%= index %>][disease]" value="<%= disease.disease %>" placeholder="Related Disease">
+          <input type="text" name="relatedDiseases[<%= index %>][advice]" value="<%= disease.advice %>" placeholder="Advice">
+          <button type="button" onclick="removeField(this)">Remove</button>
+        </div>
+      <% }); %>
       <button type="button" class="add-button" onclick="addField('related-diseases-section', 'relatedDiseases')">Add Disease</button>
     </div>
 
@@ -141,29 +153,30 @@
   </form>
 
   <script>
-    // Function to add a new input field dynamically
-    function addField(sectionId, name) {
-      const section = document.getElementById(sectionId);
-      const fieldGroup = document.createElement('div');
-      fieldGroup.classList.add('field-group');
-      fieldGroup.innerHTML = `
-        <input type="text" name="${name}[]" placeholder="Enter value">
-        <button type="button" onclick="removeField(this)">Remove</button>
-      `;
-      section.insertBefore(fieldGroup, section.lastElementChild);
-    }
-
-    // Function to remove an input field dynamically
     function removeField(button) {
       button.parentElement.remove();
     }
 
-    // Handle form submission (optional client-side behavior)
-    document.getElementById('criteriaForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Implement form validation or additional behavior here
-      alert('Form submitted!');
-    });
+    function addField(sectionId, fieldName) {
+      const section = document.getElementById(sectionId);
+      const index = section.querySelectorAll('.field-group').length;
+      const newField = document.createElement('div');
+      newField.classList.add('field-group');
+      newField.innerHTML = `
+        <label>${fieldName === 'ageRanges' ? 'Min Age:' : ''}</label>
+        <input type="${fieldName === 'ageRanges' ? 'number' : 'text'}" name="${fieldName}[${index}][${fieldName === 'ageRanges' ? 'min' : 'type'}]" placeholder="${fieldName === 'ageRanges' ? 'Minimum Age' : 'Type'}">
+        ${fieldName === 'ageRanges' ? `
+          <label>Max Age:</label>
+          <input type="number" name="${fieldName}[${index}][max]" placeholder="Maximum Age">
+          <label>Advice:</label>
+          <input type="text" name="${fieldName}[${index}][advice]" placeholder="Advice">
+        ` : `
+          <input type="text" name="${fieldName}[${index}][advice]" placeholder="Advice">
+        `}
+        <button type="button" onclick="removeField(this)">Remove</button>
+      `;
+      section.appendChild(newField);
+    }
   </script>
 </body>
 </html>

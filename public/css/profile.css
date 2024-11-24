@@ -194,6 +194,13 @@ body {
 .logout{
     color:rgb(255, 0, 0);
     display: block;
+    text-decoration: none;
+}
+.logout:hover{
+    text-decoration: underline;
+}
+.delete-button:hover {
+    font-size: 0.8rem;
 }
 
 /* Advice Section Container */

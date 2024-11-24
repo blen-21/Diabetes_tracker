@@ -84,18 +84,19 @@ app.get('/nutrition', (req,res) =>{
 app.get('/exercise', (req,res) =>{
     res.render('users/exercise');
 });
-//Route to render the exercise log page
+//Route for admin dashboard
 app.get('/admin/dashboard', async (req, res) => {
     try {
         const userCount = await User.countDocuments(); // Counts the total number of users
         const activeUserCount = await User.countDocuments({ isActive: true });
-        res.render('admins/dashboard', { userCount,activeUserCount });
+        res.render('admins/dashboard', { userCount, activeUserCount });
+        console.log("active users currently: ", activeUserCount);
     } catch (error) {
         console.error("Error fetching user count:", error);
         res.status(500).send("Internal Server Error");
     }
 });
-//Route to render the faq page
+//Route to render the frequently asked questions
 app.get("/faq", (req, res) => {
     const faqData = [
         {
@@ -390,8 +391,8 @@ app.post("/login", async (req, res) => {
                 req.session.email = user.email;
                 req.session.fname = user.fname;
                 req.session.lname = user.lname;
-                req.session.role = role;  // Store role in session for access control
-                user.isActive = "true";
+                req.session.role = role;  // Storing role in session for access control
+                user.is = "true";
                 console.log("isActive: " + user.isActive)
                 console.log(`${role.charAt(0).toUpperCase() + role.slice(1)} logged in with ID:`, req.session.userId);
                 
@@ -766,6 +767,7 @@ app.post('/chat', async (req, res) => {
         res.status(500).json({ error: "Error connecting to OpenAI API" });
     }
 });
+//sample advoce criteria
 const seedAdviceCriteria = async () => {
     const criteria = new AdviceCriteria({
       ageRanges: [
@@ -933,8 +935,14 @@ app.get('/admin/logout', (req, res) => {
         res.redirect('/login'); // Redirect to the login page after logout
     });
 });
-  app.get("/admin/settings", (req, res) => {
-    res.render("admins/settings");
+  app.get("/admin/settings", async (req, res) => {
+    try {
+        const adviceCriteria = await AdviceCriteria.findOne(); // Fetch the single document
+        res.render('admins/settings', { adviceCriteria });
+    } catch (error) {
+        console.error("Error fetching advice criteria:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Starting the server
